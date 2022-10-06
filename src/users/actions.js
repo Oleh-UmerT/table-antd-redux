@@ -30,7 +30,19 @@ export const usersActions = Object.freeze({
 
         let response = await api.users.fetch();
         if (response.status === 200) {
-            dispatch(usersActions.fill(response.data));
+            const props = response.data.map((item) => ({
+                key: String(item?.id),
+                name: item?.name,
+                email: item?.email,
+                city: item?.address.city,
+                suite: item?.address.suite,
+                zipcode: item?.address.zipcode,
+                phone: item?.phone,
+                company: item?.company.name,
+                catchPhrase: item?.company.catchPhrase,
+                website: item?.website
+            }))
+            dispatch(usersActions.fill(props));
         } else {
             const error = {
                 status: response.status
